@@ -1,0 +1,223 @@
+// styles.scss
+
+// Color Variables
+$background-color: #f4f4f4; // Light grey background
+$primary-color: #4A90E2; // Primary color
+$secondary-color: #333; // Dark grey for text
+$success-color: #d4edda; // Light green for completed tasks
+$error-color: #dc3545; // Red for errors
+$border-color: #ccc; // Light grey for borders
+$border-radius: 5px; // Common border radius
+$font-family: 'Dancing Script', sans-serif;
+
+// Global Styles
+
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: $primary-color;
+}
+
+// Headings
+h1, h2, h3, h4 {
+  margin: 0;
+  color: $primary-color; // Primary color for headings
+}
+
+h3 {
+  color: $secondary-color;
+}
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+// Links
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline; // Underline on hover
+  }
+}
+
+// Buttons
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 200px; /* Set a fixed width for all buttons */
+  max-width: 100%; /* Allow it to be responsive */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.btn-primary {
+  background-color: $primary-color; /* Use your primary color variable */
+}
+
+.btn-primary:hover {
+  background-color: darken($primary-color, 10%); /* Darker shade on hover */
+}
+
+.btn-cancel {
+  background-color: $secondary-color; /* Use your secondary color variable */
+}
+
+.btn-cancel:hover {
+  background-color: darken($secondary-color, 10%); /* Darker shade on hover */
+}
+
+.btn-delete {
+  max-width: fit-content;
+  background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent red */
+}
+
+.btn-delete:hover {
+  background-color: rgba(255, 0, 0, 0.7); /* More opaque red on hover */
+}
+
+.btn-danger {
+  background-color: $error-color; /* Use your error color variable */
+}
+
+.btn-danger:hover {
+  background-color: darken($error-color, 10%); /* Darker shade on hover */
+}
+
+// Form Elements
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: $primary-color; // Change border color on focus
+    outline: none; // Remove default outline
+  }
+}
+
+// Error Messages
+.error-message {
+  color: $error-color;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.common-select {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+// Utility Classes
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.mt-2 {
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+ 
+  input,
+  select,
+  textarea {
+    padding: 5px; 
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 576px) {
+  html {
+    font-size: 13px; 
+  }
+
+  body {
+    padding: 10px; 
+  }
+
+  h1 {
+    font-size: 1.5rem; 
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+    line-height: 1.4; 
+  }
+  .button {
+    font-size: 0.9rem;
+    padding: 8px 12px; 
+  }
+}
