@@ -66,7 +66,7 @@ import { Todo } from "@/types/todo";
 import { addTodo } from "@/api/todoService";
 // import CustomButton from "@/components/CustomButton.vue";
 import { Priority } from "@/types/priority";
-import InputFieldComponent from "@/components/ InputFieldComponent.vue";
+import InputFieldComponent from "@/components/InputFieldComponent.vue";
 import SelectFieldComponent from "@/components/SelectFieldComponent.vue";
 
 import * as yup from "yup";
