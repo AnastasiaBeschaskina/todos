@@ -16,17 +16,32 @@ Project Setup and Installation
 
 ## Project setup
 ```
-npm init -y
+npm install
 
-npm install @aws-sdk/client-s3 @fontsource/dancing-script aws-sdk axios body-parser core-js cors dotenv express postcss register-service-worker uuid vee-validate vue vue-router vuex yup
+npm install express cors body-parser dotenv aws-sdk @aws-sdk/client-s3 uuid
 
-Install devDependencies:
+npm install vue vue-router vuex axios core-js postcss vee-validate yup @fontsource/dancing-script
 
-npm install --save-dev @types/jest @types/uuid @typescript-eslint/eslint-plugin @typescript-eslint/parser @vue/cli-plugin-babel @vue/cli-plugin-e2e-cypress @vue/cli-plugin-eslint @vue/cli-plugin-pwa @vue/cli-plugin-router @vue/cli-plugin-typescript @vue/cli-plugin-unit-jest @vue/cli-plugin-vuex @vue/cli-service @vue/eslint-config-typescript @vue/test-utils @vue/vue3-jest babel-jest concurrently cypress eslint eslint-plugin-vue jest sass sass-loader ts-jest typescript
+npm install --save-dev @vue/cli-service @vue/cli-plugin-babel @vue/cli-plugin-eslint @vue/cli-plugin-router @vue/cli-plugin-typescript @vue/cli-plugin-unit-jest @vue/cli-plugin-vuex @vue/cli-plugin-pwa @vue/cli-plugin-e2e-cypress @vue/eslint-config-typescript concurrently cypress jest ts-jest typescript babel-jest @types/jest @types/uuid
 ```
 
 ### Compiles and hot-reloads for development
+Make sure your package.json has the dev script configured correctly. It should look something like this:
+
+"scripts": {
+  "serve": "vue-cli-service serve",
+  "build": "vue-cli-service build",
+  "test:unit": "vue-cli-service test:unit",
+  "test:e2e": "vue-cli-service test:e2e",
+  "lint": "vue-cli-service lint",
+  "start": "node index.js", // This should point to your backend entry point
+  "dev": "concurrently \"npm run serve\" \"npm run start\"" // This runs both frontend and backend
+}
+
+
 ```
+npm install --save-dev concurrently
+
 npm run serve
 ```
 
