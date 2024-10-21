@@ -116,7 +116,7 @@ export default defineComponent({
 
     // Function that handles adding a new task
     const handleTaskAdded = (newTask: Todo) => {
-      tasks.value.push(newTask); // Add the new task to the local tasks array
+      tasks.value.unshift(newTask); // Add the new task to the local tasks array
       closeAddTaskForm(); // Close the task addition form after adding the task
     };
 

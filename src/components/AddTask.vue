@@ -50,7 +50,7 @@
 
       <div class="btn-container">
         <button @click="submitTask" class="btn-primary">Add New</button>
-        <button class="btn-cancel" @click="cancelSubmitTask">Cancel</button>
+        <button class="btn-cancel">Cancel</button>
       </div>
     </form>
 

@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const app = express();
 const S3TodoRepository = require("./repositories/s3TodoRepository");
 
-const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
@@ -12,35 +13,51 @@ app.use(express.json());
 
 const todoRepository = new S3TodoRepository();
 
+
+// Endpoint to get all todos
+// app.get("/todos", async (req, res) => {
+//   console.log("req")
+//   try {
+//     // Define the fields to fetch from the todo objects
+//     const fields = ["_id", "title", "priority", "dueDate", "completed"];
+
+//     // Fetch todos in object format using the repository
+//     const todosObject = await todoRepository.getAllTodos(fields);
+
+//     // Convert the fetched todos object into an array
+//     const todosArray = Object.values(todosObject.todos);
+
+//     // Transform the array into a structured object, where each todo's ID is the key
+//     const todos = todosArray.reduce((acc, todo) => {
+//       acc[todo.id] = {
+//         id: todo.id,
+//         title: todo.title,
+//         priority: todo.priority,
+//         dueDate: todo.dueDate,
+//         completed: todo.completed,
+//       };
+//       return acc;
+//     }, {});
+
+//     // Respond with the structured todos object
+//     res.json(todos);
+//   } catch (error) {
+//     console.error("Error fetching todos:", error);
+//     res.status(500).json({ error: "Failed to retrieve todos" });
+//   }
+// });
+
 // Endpoint to get all todos
 app.get("/todos", async (req, res) => {
+  console.log("Fetching todos from stack...");
   try {
-    // Define the fields to fetch from the todo objects
-    const fields = ["_id", "title", "priority", "dueDate", "completed"];
 
-    // Fetch todos in object format using the repository
-    const todosObject = await todoRepository.getAllTodos(fields);
+    await todoRepository.loadTodos();
 
-    // Convert the fetched todos object into an array
-    const todosArray = Object.values(todosObject.todos);
-
-    // Transform the array into a structured object, where each todo's ID is the key
-    const todos = todosArray.reduce((acc, todo) => {
-      acc[todo.id] = {
-        id: todo.id,
-        title: todo.title,
-        priority: todo.priority,
-        dueDate: todo.dueDate,
-        completed: todo.completed,
-      };
-      return acc;
-    }, {});
-
-    // Respond with the structured todos object
-    res.json(todos);
+    res.json(todoRepository.todosStack);
   } catch (error) {
-    console.error("Error fetching todos:", error);
-    res.status(500).json({ error: "Failed to retrieve todos" });
+    console.error("Error fetching todos:", error); 
+    res.status(500).json({ error: "Error fetching todos" });
   }
 });
 
@@ -84,7 +101,6 @@ app.post("/todos", async (req, res) => {
 // Endpoint to delete a todo by its ID
 app.delete("/todos/:id", async (req, res) => {
   const { id } = req.params; // Extract the ID from the request parameters
-  console.log(`Delete request received for ID: ${id}`); // Log the delete request
 
   try {
     // Attempt to delete the todo with the specified ID
@@ -97,7 +113,7 @@ app.delete("/todos/:id", async (req, res) => {
 });
 
 // Start the server on the specified port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

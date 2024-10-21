@@ -1,17 +1,24 @@
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "http://localhost:4000";
 import { Todo } from "@/types/todo"; // Ensure this import matches your directory structure
 
 // Fetch all todos
 export const fetchTodos = async (): Promise<Todo[]> => {
   try {
+
     const response = await axios.get("/todos");
-    // Convert the response object to an array
+
     const todosArray: Todo[] = Object.values(response.data);
+
     return todosArray;
+    
   } catch (error) {
-    console.error("Error fetching todos:", error);
-    throw error; // Rethrow the error to handle it where the function is called
+    if (axios.isAxiosError(error)) {
+      console.error("Axios Error:", error.message, error.code); // Log the error message and code
+    } else {
+      console.error("Unknown Error:", error);
+    }
+    throw error;
   }
 };
 
@@ -20,7 +27,7 @@ export const fetchTodoById = async (id: string): Promise<Todo> => {
   try {
     // Make an Axios GET request to the API endpoint to fetch the todo by ID
     const response = await axios.get(`/todos/${id}`);
-    
+
     // Return the data from the response
     return response.data;
   } catch (error) {
