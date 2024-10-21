@@ -37,13 +37,6 @@ npm install express cors body-parser dotenv aws-sdk @aws-sdk/client-s3 uuid
 npm install vue vue-router vuex axios core-js postcss vee-validate yup @fontsource/dancing-script
 
 npm install --save-dev @vue/cli-service @vue/cli-plugin-babel @vue/cli-plugin-eslint @vue/cli-plugin-router @vue/cli-plugin-typescript @vue/cli-plugin-unit-jest @vue/cli-plugin-vuex @vue/cli-plugin-pwa @vue/cli-plugin-e2e-cypress @vue/eslint-config-typescript concurrently cypress jest ts-jest typescript babel-jest @types/jest @types/uuid
-npm init -y
-
-npm install @aws-sdk/client-s3 @fontsource/dancing-script aws-sdk axios body-parser core-js cors dotenv express postcss register-service-worker uuid vee-validate vue vue-router vuex yup
-
-Install devDependencies:
-
-npm install --save-dev @types/jest @types/uuid @typescript-eslint/eslint-plugin @typescript-eslint/parser @vue/cli-plugin-babel @vue/cli-plugin-e2e-cypress @vue/cli-plugin-eslint @vue/cli-plugin-pwa @vue/cli-plugin-router @vue/cli-plugin-typescript @vue/cli-plugin-unit-jest @vue/cli-plugin-vuex @vue/cli-service @vue/eslint-config-typescript @vue/test-utils @vue/vue3-jest babel-jest concurrently cypress eslint eslint-plugin-vue jest sass sass-loader ts-jest typescript
 ```
 
 ### Compiles and hot-reloads for development
