@@ -1,22 +1,6 @@
 {
-  "todos": {
-    "1": {
-      "id": "1",
-      "title": "Study Vue.js Basics",
-      "description": "Learn the basic concepts of Vue.js, including components and directives.",
-      "priority": "High",
-      "dueDate": "2024-10-14",
-      "completed": true
-    },
-    "2": {
-      "id": "2",
-      "title": "Write and Connect Backend",
-      "description": "Develop the backend to handle requests and connect to a database.",
-      "priority": "High",
-      "dueDate": "2024-10-15",
-      "completed": true
-    },
-    "3": {
+  "todos": [
+    {
       "id": "3",
       "title": "Frontend Development with Vue.js",
       "description": "Build the frontend of the application using Vue.js.",
@@ -24,45 +8,13 @@
       "dueDate": "2024-10-16",
       "completed": true
     },
-    "4": {
+    {
       "id": "4",
       "title": "Implement Database Integration",
       "description": "Connect the backend with the database to perform CRUD operations.",
       "priority": "High",
       "dueDate": "2024-10-17",
       "completed": false
-    },
-    "5": {
-      "id": "5",
-      "title": "Testing the Application",
-      "description": "Test the application for bugs and ensure all features work correctly.",
-      "priority": "Medium",
-      "dueDate": "2024-10-18",
-      "completed": false
-    },
-    "6": {
-      "id": "6",
-      "title": "Deploy the Application",
-      "description": "Prepare and deploy the application to a hosting service.",
-      "priority": "Medium",
-      "dueDate": "2024-10-19",
-      "completed": false
-    },
-    "7": {
-      "id": "7",
-      "title": "Gather Feedback",
-      "description": "Collect feedback from users to improve the application.",
-      "priority": "Low",
-      "dueDate": "2024-10-20",
-      "completed": false
-    },
-    "8": {
-      "id": "8",
-      "title": "Enhance Application Features",
-      "description": "Add additional features based on user feedback and suggestions.",
-      "priority": "Low",
-      "dueDate": "2024-10-21",
-      "completed": false
     }
-  }
+  ]
 }

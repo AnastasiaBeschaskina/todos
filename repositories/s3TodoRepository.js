@@ -2,30 +2,59 @@ const { s3, BUCKET_NAME } = require("../config");
 const { v4: uuidv4 } = require("uuid");
 const { Buffer } = require("buffer");
 
-const todosFileKey = "Anastasia/todos.json";
+const todosFileKey = "todos.json";
 
 class S3TodoRepository {
   constructor() {
-    this.todosCache = null; // Hash table for quick retrieval of todos by ID
-    this.todosStack = []; // Stack for displaying todos
+    this.todosCache = new Map(); // Using Map for caching
+    this.todoList = [];
+    this.pageSize = 10; // Number of todos per page for pagination
   }
 
-  // Method to load todos from S3 into cache and stack
+  // Method to load todos from S3 into cache and list
   async loadTodos() {
-    if (!this.todosCache) {
-      this.todosCache = await this.getAllTodos(); // Load todos from S3
-      this.todosStack = Object.values(this.todosCache.todos); // Populate the stack with todos
-      console.log(this.todosStack);
+    if (this.todosCache.size === 0) {
+      // Check if the cache is empty
+      const data = await this.getAllTodos(); // Load todos
+      this.todosList = data.todos; // Copy todos to the list for display
+
+      // Fill the Map for quick lookups
+      this.todosList.forEach((todo) => {
+        this.todosCache.set(todo.id, todo);
+        console.log("Todo added to cache:", todo); // Print each todo as it's added to the cache
+      });
+
+      // Print the full cache after all todos are added
+      console.log("Full todosCache:", this.todosCache);
     }
-    return this.todosCache;
+
+    // Convert the Map to an array and sort todos by due date
+    const sortedTodos = Array.from(this.todosCache.values()).sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return dateA - dateB; // Sort in ascending order by date
+    });
+
+    return sortedTodos; // Return the sorted todos
+  }
+
+  // Method to retrieve paginated todos
+  getPaginatedTodos(page = 1) {
+    const startIndex = (page - 1) * this.pageSize;
+    const endIndex = page * this.pageSize;
+
+    const paginatedTodos = this.todosList.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(this.todosList.length / this.pageSize);
+
+    return {
+      currentPage: page,
+      totalPages,
+      todos: paginatedTodos,
+    };
   }
 
   // Method to retrieve all todos from S3
   async getAllTodos() {
-    if (this.todosCache) {
-      return this.todosCache; // If todos are already cached, return them
-    }
-
     try {
       const data = await s3.getObject({
         Bucket: BUCKET_NAME,
@@ -33,23 +62,44 @@ class S3TodoRepository {
       });
 
       const bodyContent = await this.streamToString(data.Body);
-      this.todosCache = JSON.parse(bodyContent); // Parse JSON and store in cache
-      return this.todosCache;
+
+      if (!bodyContent || bodyContent.trim() === "") {
+        console.warn("Todos file is empty.");
+        return { todos: [] };
+      }
+
+      return JSON.parse(bodyContent); // Parse JSON and return
     } catch (error) {
       if (error.name === "NoSuchKey") {
-        this.todosCache = { todos: {} }; // Empty cache if file is not found
-        return this.todosCache;
+        return { todos: [] }; // If the file doesn't exist, return an empty array
       }
-      throw error; // Rethrow unexpected errors
+      throw error; // Rethrow other errors
     }
+  }
+
+  // Method to fetch a todo by ID
+  async fetchTodoById(todoId) {
+    if (!this.todosCache || this.todosCache.size === 0) {
+      console.error("Todos cache is empty");
+      throw new Error("No todos available");
+    }
+
+    // Get the todo by ID using the Map
+    const todo = this.todosCache.get(todoId);
+    if (!todo) {
+      console.error(`Todo with ID ${todoId} not found in cache`);
+      throw new Error(`Todo with ID ${todoId} not found`);
+    }
+
+    console.log("Found todo:", todo); // Log the found todo
+    return todo;
   }
 
   // Method to add a new todo
   async addTodo(newTodo) {
     await this.loadTodos(); // Load existing todos
 
-    // Generate a unique ID for the new todo
-    const id = newTodo.id ? String(newTodo.id) : uuidv4();
+    const id = newTodo.id ? String(newTodo.id) : uuidv4(); // Generate an ID
     const todoWithId = {
       id,
       title: newTodo.title,
@@ -59,55 +109,48 @@ class S3TodoRepository {
       completed: newTodo.completed || false,
     };
 
-    // Add the new todo to the stack (new todo will be the first in the list)
-    this.todosStack.unshift(todoWithId);
+    // Add the new todo to the beginning of the list
+    this.todosList.unshift(todoWithId);
 
-    // Update the hash table (add the new todo)
-    this.todosCache.todos[id] = todoWithId;
+    // Update the cache (Map)
+    this.todosCache.set(id, todoWithId);
 
-    // Save todos back to S3
+    // Save the todos to S3
     await this.saveTodos();
 
     return todoWithId; // Return the added todo
   }
 
-  // Method to fetch a todo by ID
-  async fetchTodoById(todoId) {
-    await this.loadTodos(); // Load existing todos
-    const todo = this.todosCache.todos[todoId]; // Look for the todo by ID in the hash table
-    if (!todo) {
-      throw new Error(`Todo with ID ${todoId} not found`);
-    }
-    return todo; // Return the found todo
-  }
-
   // Method to delete a todo
   async deleteTodo(id) {
-    await this.loadTodos(); // Load existing todos
-
-    if (!this.todosCache.todos[id]) {
-      throw new Error("Todo not found");
+    console.log("dele");
+    if (this.todosCache.size === 0) {
+      await this.loadTodos(); // Load todos if they are not loaded
     }
 
-    // Remove the todo from the hash table
-    delete this.todosCache.todos[id];
+    if (!this.todosCache.has(id)) {
+      throw new Error(`Todo with ID ${id} not found`);
+    }
 
-    // Remove the todo from the stack
-    this.todosStack = this.todosStack.filter((todo) => todo.id !== id);
+    // Remove the todo from the cache (Map)
+    this.todosCache.delete(id);
+
+    // Remove the todo from the list
+    this.todosList = this.todosList.filter((todo) => todo.id !== id);
 
     // Save changes to S3
     await this.saveTodos();
-    return { message: "Todo successfully deleted" }; // Return success message
+
+    return { message: "Todo successfully deleted" };
   }
 
   // Method to save todos to S3
   async saveTodos() {
-    // console.log(this.todosCache);
-    // console.log(this.todosStack);
+    const todosToSave = Array.from(this.todosCache.values()); // Convert Map to an array
     const params = {
       Bucket: BUCKET_NAME,
       Key: todosFileKey,
-      Body: JSON.stringify(this.todosCache), // Save the hash table
+      Body: JSON.stringify({ todos: todosToSave }), // Save the array of todos
       ContentType: "application/json",
     };
     await s3.putObject(params); // Upload the updated todos to S3

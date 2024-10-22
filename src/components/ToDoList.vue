@@ -61,11 +61,21 @@
       </div>
     </div>
   </div>
+  <!-- Pagination Controls -->
+    <div class="pagination-controls">
+      <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
+        Previous
+      </button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">
+        Next
+      </button>
+    </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { fetchTodos, deleteTodo, fetchTodoById } from "@/api/todoService";
+import {fetchTodos, deleteTodo, fetchTodoById } from "@/api/todoService";
 import { Todo } from "@/types/todo";
 import AddTask from "@/components/AddTask.vue";
 import IconDelete from "./IconDelete.vue";
@@ -80,24 +90,41 @@ export default defineComponent({
     const tasks = ref<Todo[]>([]); // Reactive array that stores the list of tasks
     const showForm = ref<boolean>(false); // Reactive boolean to control the visibility of the AddTask form
     const selectedTask = ref<Todo | null>(null); // Reactive variable to hold the currently selected task's details
+    const currentPage = ref<number>(1);
+    const totalPages = ref<number>(1);
 
     // Function to fetch all tasks from the server and store them in tasks
     const loadTasks = async () => {
       try {
+        // const result = await fetchPaginatedTodos(currentPage.value);
         tasks.value = await fetchTodos(); // Fetches the tasks from API and assigns them to tasks array
+        // totalPages.value = result.totalPages;
       } catch (error) {
         console.error("Failed to load tasks:", error); // Logs any error if fetching tasks fails
       }
     };
 
+    const changePage = async (page: number) => {
+      if (page > 0 && page <= totalPages.value) {
+        currentPage.value = page; 
+        await loadTasks(); 
+      }
+    };
+
     // Function to select a specific task by ID and fetch its details
     const selectTask = async (id: string) => {
-      console.log("Fetching task with ID:", id); // Log the ID of the task being fetched
       try {
-        selectedTask.value = await fetchTodoById(id); // Fetch task details by ID and store in selectedTask
-        console.log("Selected Task:", selectedTask.value); // Log the selected task details
+        const task = await fetchTodoById(id); // Fetch the task by its ID
+        if (task) {
+          console.log("Task found:", task); // Log if the task is found
+        } else {
+          console.log("Task not found for ID:", id); // Log if no task is found for the provided ID
+        }
+
+        selectedTask.value = task; // Update the Vue state with the selected task
+        console.log("Selected Task after update:", selectedTask.value); // Log the updated selected task
       } catch (error) {
-        console.error("Failed to fetch task details:", error); // Log error if fetching task details fails
+        console.error("Failed to fetch task details:", error); // Log an error if fetching task details fails
       }
     };
 
@@ -142,6 +169,9 @@ export default defineComponent({
       showForm, // Expose the showForm boolean to the template
       selectTask, // Expose the selectTask function to the template
       selectedTask, // Expose the selectedTask variable to the template
+      currentPage,
+      totalPages,
+      changePage,
     };
   },
 });
@@ -158,6 +188,12 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-items: end;
+}
+
+.pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .form-add-task {
@@ -186,8 +222,8 @@ export default defineComponent({
 
 .task-card:hover {
   background-color: rgba(82, 135, 234);
-  transform: translateY(-2px); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Priority-based colors in blue shades */
@@ -198,7 +234,12 @@ export default defineComponent({
 
 .medium-priority {
   border-color: #6495ed; /* Medium blue */
-  background-color: rgba(82, 135, 234, 0.3); /* Slightly darker semi-transparent blue */
+  background-color: rgba(
+    82,
+    135,
+    234,
+    0.3
+  ); /* Slightly darker semi-transparent blue */
 }
 
 .low-priority {

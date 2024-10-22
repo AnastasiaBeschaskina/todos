@@ -4,7 +4,6 @@ const cors = require("cors");
 const app = express();
 const S3TodoRepository = require("./repositories/s3TodoRepository");
 
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
@@ -13,50 +12,27 @@ app.use(express.json());
 
 const todoRepository = new S3TodoRepository();
 
-
-// Endpoint to get all todos
-// app.get("/todos", async (req, res) => {
-//   console.log("req")
-//   try {
-//     // Define the fields to fetch from the todo objects
-//     const fields = ["_id", "title", "priority", "dueDate", "completed"];
-
-//     // Fetch todos in object format using the repository
-//     const todosObject = await todoRepository.getAllTodos(fields);
-
-//     // Convert the fetched todos object into an array
-//     const todosArray = Object.values(todosObject.todos);
-
-//     // Transform the array into a structured object, where each todo's ID is the key
-//     const todos = todosArray.reduce((acc, todo) => {
-//       acc[todo.id] = {
-//         id: todo.id,
-//         title: todo.title,
-//         priority: todo.priority,
-//         dueDate: todo.dueDate,
-//         completed: todo.completed,
-//       };
-//       return acc;
-//     }, {});
-
-//     // Respond with the structured todos object
-//     res.json(todos);
-//   } catch (error) {
-//     console.error("Error fetching todos:", error);
-//     res.status(500).json({ error: "Failed to retrieve todos" });
-//   }
-// });
-
 // Endpoint to get all todos
 app.get("/todos", async (req, res) => {
-  console.log("Fetching todos from stack...");
+
   try {
+    const page = parseInt(req.query.page) || 1; 
+    // const pageSize = 10;
 
     await todoRepository.loadTodos();
+    // const totalPages = Math.ceil(todos.length / pageSize);
+    // const paginatedTodos = todos.slice((page - 1) * pageSize, page * pageSize);
 
-    res.json(todoRepository.todosStack);
+    // res.json({
+    //   currentPage: page,
+    //   totalPages: totalPages,
+    //   todos: paginatedTodos,
+    // });
+
+    res.json(todoRepository.todosList);
+
   } catch (error) {
-    console.error("Error fetching todos:", error); 
+    console.error("Error fetching todos:", error);
     res.status(500).json({ error: "Error fetching todos" });
   }
 });
@@ -70,13 +46,11 @@ app.get("/todos/:id", async (req, res) => {
     const todosObject = await todoRepository.getAllTodos();
 
     // Retrieve the specific todo based on the extracted ID
-    const todo = todosObject.todos[id]; // Assuming todosObject has a 'todos' property
+    const todo = todoRepository.todosCache.get(id);
 
     if (todo) {
-      // If the todo exists, respond with its details
       res.json(todo);
     } else {
-      // If the todo is not found, respond with a 404 status and error message
       res.status(404).json({ error: "Todo not found" });
     }
   } catch (error) {
