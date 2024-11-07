@@ -2,25 +2,47 @@ import axios from "axios";
 axios.defaults.baseURL = "http://localhost:4000";
 import { Todo } from "@/types/todo"; // Ensure this import matches your directory structure
 
-// Fetch all todos
-export const fetchTodos = async (): Promise<Todo[]> => {
+// Fetch paginated todos
+export const fetchPaginatedTodos = async (
+  page = 1
+): Promise<{ todos: Todo[]; currentPage: number; totalPages: number }> => {
+  console.log(`Fetching todos for page ${page}`);
   try {
-
-    const response = await axios.get("/todos");
-
-    const todosArray: Todo[] = Object.values(response.data);
-
-    return todosArray;
-    
+    const response = await axios.get(`/todos?page=${page}`);
+    const { todos, currentPage, totalPages } = response.data;
+    return { todos, currentPage, totalPages };
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Axios Error:", error.message, error.code); // Log the error message and code
+      console.error("Axios error details:", error.response?.data);
+      console.error("Axios error status:", error.response?.status);
+      console.error("Axios error message:", error.message);
     } else {
-      console.error("Unknown Error:", error);
+      console.error("Unexpected error:", error);
     }
     throw error;
   }
 };
+
+// Fetch all todos
+// export const fetchTodos = async (): Promise<Todo[]> => {
+//   console.log("fetchAll client")
+//   try {
+
+//     const response = await axios.get("/todos");
+
+//     const todosArray: Todo[] = Object.values(response.data);
+
+//     return todosArray;
+    
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       console.error("Axios Error:", error.message, error.code); // Log the error message and code
+//     } else {
+//       console.error("Unknown Error:", error);
+//     }
+//     throw error;
+//   }
+// };
 
 // Fetch a single todo by ID
 export const fetchTodoById = async (id: string): Promise<Todo> => {

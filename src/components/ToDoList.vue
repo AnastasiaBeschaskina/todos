@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import {fetchTodos, deleteTodo, fetchTodoById } from "@/api/todoService";
+import {fetchPaginatedTodos, deleteTodo, fetchTodoById } from "@/api/todoService";
 import { Todo } from "@/types/todo";
 import AddTask from "@/components/AddTask.vue";
 import IconDelete from "./IconDelete.vue";
@@ -94,21 +94,37 @@ export default defineComponent({
     const totalPages = ref<number>(1);
 
     // Function to fetch all tasks from the server and store them in tasks
-    const loadTasks = async () => {
+    const loadTasks = async (page: number) => {
       try {
-        // const result = await fetchPaginatedTodos(currentPage.value);
-        tasks.value = await fetchTodos(); // Fetches the tasks from API and assigns them to tasks array
-        // totalPages.value = result.totalPages;
+        const result = await fetchPaginatedTodos(page); // Fetch paginated todos from the API
+        tasks.value = result.todos; // Assign the paginated todos to the tasks array
+        currentPage.value = result.currentPage; // Update current page
+        totalPages.value = result.totalPages; // Update total pages
       } catch (error) {
         console.error("Failed to load tasks:", error); // Logs any error if fetching tasks fails
       }
     };
 
+    // const loadTasks = async () => {
+    //   try {
+    //     // const result = await fetchPaginatedTodos(currentPage.value);
+    //     tasks.value = await fetchTodos(); // Fetches the tasks from API and assigns them to tasks array
+    //     // totalPages.value = result.totalPages;
+    //   } catch (error) {
+    //     console.error("Failed to load tasks:", error); // Logs any error if fetching tasks fails
+    //   }
+    // };
+
     const changePage = async (page: number) => {
+      console.log("client", page)
       if (page > 0 && page <= totalPages.value) {
         currentPage.value = page; 
-        await loadTasks(); 
+        await loadTasks(currentPage.value); 
       }
+      if (tasks.value.length === 0 && currentPage.value > 1) {
+      currentPage.value -= 1; 
+      await loadTasks(currentPage.value); 
+    }
     };
 
     // Function to select a specific task by ID and fetch its details
@@ -133,18 +149,19 @@ export default defineComponent({
       console.log(`Delete button clicked for task with ID: ${id}`); // Log the task ID that will be deleted
       try {
         await deleteTodo(id); // Call the API to delete the task by its ID
-        const updatedTasks = await fetchTodos(); // After deletion, fetch the updated list of tasks from the server
+        await loadTasks(currentPage.value);
 
-        tasks.value = updatedTasks; // Update the local tasks array with the new list of tasks
+        // tasks.value = updatedTasks; // Update the local tasks array with the new list of tasks
       } catch (error) {
         console.error("Failed to delete task:", error); // Log error if the deletion fails
       }
     };
 
     // Function that handles adding a new task
-    const handleTaskAdded = (newTask: Todo) => {
+    const handleTaskAdded =  async (newTask: Todo) => {
       tasks.value.unshift(newTask); // Add the new task to the local tasks array
       closeAddTaskForm(); // Close the task addition form after adding the task
+      await loadTasks(currentPage.value);
     };
 
     // Function to show the task addition form

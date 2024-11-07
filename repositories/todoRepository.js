@@ -1,3 +1,4 @@
+import axios from "axios";
 // Abstract class defining the TodoRepository interface
 // This class provides the structure for any specific implementations of Todo repositories.
 // Implementations must define the methods outlined below.
@@ -26,6 +27,11 @@ class TodoRepository {
   async deleteTodoById(id) {
     throw new Error("Method not implemented");
   }
+
+  async fetchPaginatedTodos (page) {
+     throw new Error("Method not implemented");
+  }
 }
 
-module.exports = TodoRepository; // Exporting the TodoRepository class for use in other modules
+export default TodoRepository;
+

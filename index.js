@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const S3TodoRepository = require("./repositories/s3TodoRepository");
+const { types } = require("sass");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -14,48 +15,78 @@ const todoRepository = new S3TodoRepository();
 
 // Endpoint to get all todos
 app.get("/todos", async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if no page query is provided
 
   try {
-    const page = parseInt(req.query.page) || 1; 
-    // const pageSize = 10;
+    const result = await todoRepository.getPaginatedTodos(page); // Get paginated todos
+    // Destructure todos and totalPages from result
+    const { todos, currentPage, totalPages } = result; // Деструктурируем ответ из репозитория
 
-    await todoRepository.loadTodos();
-    // const totalPages = Math.ceil(todos.length / pageSize);
-    // const paginatedTodos = todos.slice((page - 1) * pageSize, page * pageSize);
-
-    // res.json({
-    //   currentPage: page,
-    //   totalPages: totalPages,
-    //   todos: paginatedTodos,
-    // });
-
-    res.json(todoRepository.todosList);
+    res.json({
+      todos: todos,
+      currentPage: currentPage,
+      totalPages: totalPages,
+    });
 
   } catch (error) {
-    console.error("Error fetching todos:", error);
-    res.status(500).json({ error: "Error fetching todos" });
+    console.error("Error fetching paginated todos:", error);
+    res.status(500).json({ error: "Failed to fetch todos" });
   }
 });
+// app.get("/todos", async (req, res) => {
+
+//   try {
+//     const page = parseInt(req.query.page) || 1;
+//     // const pageSize = 10;
+
+//     await todoRepository.loadTodos();
+//     // Get paginated todos for the requested page
+//     const paginatedTodos = todoRepository.getPaginatedTodos(page);
+
+//     // Send the paginated todos as JSON
+//     res.json(paginatedTodos); // This will return { currentPage, totalPages, todos }
+
+//     // res.json(todoRepository.todosList);
+//   } catch (error) {
+//     console.error("Error fetching todos:", error);
+//     res.status(500).json({ error: "Error fetching todos" });
+//   }
+// });
 
 // Route to get a single todo by its ID
+// app.get("/todos/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params; // Extract the ID from the request parameters
+//     console.log(id)
+
+//     // Fetch all todos to find the specific one
+//     const todosObject = await todoRepository.getAllTodos();
+
+//     // Retrieve the specific todo based on the extracted ID
+//     const todo = todoRepository.todosCache.get(id);
+
+//     if (todo) {
+//       res.json(todo);
+//     } else {
+//       res.status(404).json({ error: "Todo not found" });
+//     }
+//   } catch (error) {
+//     console.error("Error fetching todo:", error);
+//     res.status(500).json({ error: "Failed to retrieve todo" });
+//   }
+// });
 app.get("/todos/:id", async (req, res) => {
+  const { id } = req.params; // Get the todo ID from the request parameters
   try {
-    const { id } = req.params; // Extract the ID from the request parameters
-
-    // Fetch all todos to find the specific one
-    const todosObject = await todoRepository.getAllTodos();
-
-    // Retrieve the specific todo based on the extracted ID
-    const todo = todoRepository.todosCache.get(id);
-
-    if (todo) {
-      res.json(todo);
-    } else {
-      res.status(404).json({ error: "Todo not found" });
-    }
+    const todo = await todoRepository.fetchTodoById(id); // Fetch todo from the repository
+    res.json(todo); // Send the found todo as the response
   } catch (error) {
     console.error("Error fetching todo:", error);
-    res.status(500).json({ error: "Failed to retrieve todo" });
+    if (error.message.includes("not found")) {
+      res.status(404).json({ error: error.message }); // Send a 404 error if not found
+    } else {
+      res.status(500).json({ error: "Failed to retrieve todo" }); // General error response
+    }
   }
 });
 
