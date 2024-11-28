@@ -27,6 +27,7 @@
 	•	Database & Storage: MySQL, AWS S3 (for JSON task storage)
 	•	AI Integration: OpenAI API for CV analysis and task generation
 	•	APIs: RESTful APIs for frontend-backend communication
+![Project Image](/project2.png)
 ## Project setup
 ```
 npm install
