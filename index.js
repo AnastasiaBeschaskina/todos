@@ -109,6 +109,7 @@ app.get("/todos/:id", async (req, res) => {
 // ** Endpoint to create a new todo **
 app.post("/todos", async (req, res) => {
   const newTodo = req.body; // Get new todo details from request body
+  console.log(newTodo);
   try {
     const addedTodo = await todoRepository.addTodo(newTodo); // Add new todo to repository
     res.status(201).json(addedTodo);

@@ -8,7 +8,8 @@
           alt="Positive Analysis Icon"
           class="analysis-icon"
         />
-      </div><p>
+      </div>
+      <p>
         Now you can get ready for your interview with a personalized preparation
         plan. Here’s your tailored schedule to help you succeed. Feel free to
         remove personal tasks or add new ones that you believe are important.

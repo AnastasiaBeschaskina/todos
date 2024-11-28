@@ -183,7 +183,7 @@ class S3TodoRepository {
 
     this.isCacheStale = true; // Mark cache as stale
     await this.saveTodos(); // Save the updated todos to S3
-
+    console.log(todoWithId);
     return todoWithId; // Return the added todo
   }
 
