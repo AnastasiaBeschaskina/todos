@@ -14,20 +14,6 @@ Key Features:
 	6.	Backend with AWS S3: All tasks are stored in AWS S3 for persistent storage.
 Project Setup and Installation
 
-This project is a ToDo List Application built with a Vue.js frontend and a Node.js backend. The application is designed to help users manage tasks efficiently. 
-It allows users to add, view, and delete tasks, with tasks categorized by priority. 
-The frontend interacts with the backend through RESTful APIs, and all tasks are stored in AWS S3.
-
-Key Features:
-
-	1.	Display Task List: The homepage shows a list of all tasks (ToDo items), color-coded by priority.
-	2.	Task Details: Clicking on any task reveals its detailed information.
-	3.	Priority-Based Coloring: Tasks are marked with different colors based on their priority (High, Medium, Low).
-	4.	Completed Tasks: Tasks that are completed are displayed with strikethrough text.
-	5.	Task Management: Users can create, delete, and manage their tasks.
-	6.	Backend with AWS S3: All tasks are stored in AWS S3 for persistent storage.
-Project Setup and Installation
-
 ## Project setup
 ```
 npm install
