@@ -1,12 +1,12 @@
-## ToDo and Interview Preparation Platform
+# ToDo and Interview Preparation Platform
 
 - Overview
   - This is a full-stack application designed to help users efficiently manage tasks and prepare for job interviews. The platform combines the functionality of a To-Do List with tools to assist job seekers by generating personalized interview preparation schedules and providing AI-powered CV analysis.
   - The frontend is built with Vue.js, and the backend leverages Node.js. Tasks and data are securely stored using AWS S3, and the application integrates the OpenAI API for advanced AI-driven features.
     
-# Key Features
+## Key Features
 
-- Task Management
+### Task Management
   - Task List Display: The homepage displays all tasks in a user-friendly list, color-coded based on their priority (High, Medium, Low).
   - Task Details: Clicking on a task reveals detailed information, such as the task’s title, description, and due date.
   - Priority-Based Coloring: Tasks are visually categorized by priority levels for better organization.
@@ -14,13 +14,13 @@
   - Create, Update, and Delete Tasks: Users can efficiently manage tasks through a responsive interface.
   - AWS S3 Integration: All task data is stored in Amazon S3, ensuring scalability and persistence.
 
-- Interview Preparation
+### Interview Preparation
   - Personalized Task Scheduler: Generates customized task schedules with deadlines, based on user-provided inputs like career goals and interview timelines.
   - CV Analysis and Feedback: AI-driven analysis of uploaded resumes, highlighting strengths and offering actionable suggestions for improvement.
   - Task-Based Preparation: The platform helps users stay organized by breaking down interview preparation into manageable tasks.
   - Interactive UI: A seamless and intuitive design enhances user navigation, making task and schedule management straightforward.
     
-# Technologies Used
+## Technologies Used
 
 	•	Frontend: Vue.js, CSS, JavaScript, TypeScript
 	•	Backend: Node.js
