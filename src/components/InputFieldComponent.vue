@@ -38,6 +38,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/styles/styles.scss"; // Import the SCSS styles
+@import "@/styles/styles.scss"; 
+
+.common-select input {
+  padding-left: 3px;
+  display: block;
+  width: 100%;
+  width: 295px;
+  // border: 2px solid red;
+  // width: 100%;
+  // max-width: 300px;
+}
 
 </style>

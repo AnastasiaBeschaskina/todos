@@ -1,6 +1,28 @@
 <template>
   <div class="add-task">
-    <form>
+    <!-- Show "Add New" button when the form is hidden -->
+    <div class="add-task-container" v-if="!showForm">
+      <div class="image-container">
+        <img
+          src="../assets/images/tasks.webp"
+          alt="Positive Analysis Icon"
+          class="analysis-icon"
+        />
+      </div><p>
+        Now you can get ready for your interview with a personalized preparation
+        plan. Here’s your tailored schedule to help you succeed. Feel free to
+        remove personal tasks or add new ones that you believe are important.
+      </p>
+      <CustomButton
+        v-if="!showForm"
+        @click="showAddTaskForm"
+        class="primary"
+        label="Add New"
+      />
+    </div>
+    <form v-if="showForm" class="task-form">
+      <p>Add tasks to your interview preparation plan with this form.</p>
+      <!-- Task title input -->
       <InputFieldComponent
         name="title"
         label="Task Title"
@@ -10,6 +32,7 @@
         placeholder="Enter task title"
       />
 
+      <!-- Task description input -->
       <InputFieldComponent
         name="description"
         label="Task Description"
@@ -19,6 +42,7 @@
         placeholder="Enter task description"
       />
 
+      <!-- Task priority dropdown -->
       <SelectFieldComponent
         name="priority"
         label="Priority"
@@ -27,33 +51,24 @@
         :errorMessage="validationErrors.priority"
         id="priority"
       />
-      <!-- Display validation error for priority -->
-      <div v-if="validationErrors.priority" class="error-message">
-        {{ validationErrors.priority }}
-      </div>
 
-      <!-- Due date field -->
-      <div class="common-select">
-        <!-- <label for="dueDate">Due Date</label> -->
-        <input
-          type="date"
-          v-model="dueDateString"
-          :min="minDate"
-          required
-          @input="updateDueDate"
-          class="common-input"
-        />
-        <div v-if="validationErrors.dueDate" class="error-message">
-          {{ validationErrors.dueDate }}
-        </div>
-      </div>
+      <!-- Task due date input -->
+      <InputDate
+        id="dueDate"
+        label="Due Date"
+        v-model="task.dueDate"
+        :minDate="minDate"
+        :errorMessage="validationErrors.dueDate"
+      />
 
+      <!-- Form action buttons -->
       <div class="btn-container">
-        <button @click="submitTask" class="btn-primary">Add New</button>
-        <button class="btn-cancel">Cancel</button>
+        <CustomButton label="Save Task" @click="submitTask" class="primary" />
+        <CustomButton label="Cancel" @click="closeForm" class="cancel" />
       </div>
     </form>
 
+    <!-- Display general validation errors -->
     <div v-if="validationErrors.general" class="error-message">
       {{ validationErrors.general }}
     </div>
@@ -64,21 +79,24 @@
 import { defineComponent, ref } from "vue";
 import { Todo } from "@/types/todo";
 import { addTodo } from "@/api/todoService";
-// import CustomButton from "@/components/CustomButton.vue";
+import CustomButton from "@/components/CustomButton.vue";
 import { Priority } from "@/types/priority";
 import InputFieldComponent from "@/components/InputFieldComponent.vue";
 import SelectFieldComponent from "@/components/SelectFieldComponent.vue";
+import InputDate from "./InputDate.vue";
 
 import * as yup from "yup";
 
 export default defineComponent({
   name: "AddTask",
   components: {
-    // CustomButton,
+    CustomButton,
     InputFieldComponent,
     SelectFieldComponent,
+    InputDate,
   },
-  setup(props, { emit }) {
+  emits: ["taskAdded"],
+  setup(_, { emit }) {
     const task = ref<Todo>({
       id: "",
       title: "",
@@ -88,25 +106,11 @@ export default defineComponent({
       completed: false,
     });
 
-    // Store the due date in ISO format (YYYY-MM-DD)
-    const dueDateString = ref<string>(new Date().toISOString().split("T")[0]);
-
-    // Set today's date as the minimum selectable date
     const minDate = new Date().toISOString().split("T")[0];
-
-    // Function to format 'YYYY-MM-DD' to 'DD.MM.YYYY'
-    const formatDateString = (dateString: string): string => {
-      const [year, month, day] = dateString.split("-");
-      return `${day}.${month}.${year}`;
-    };
-
-    // Function to update the due date in the task
-    const updateDueDate = () => {
-      task.value.dueDate = formatDateString(dueDateString.value); // Set task due date in the desired format
-    };
-
+    const showForm = ref<boolean>(false);
     const priorityOptions = Object.values(Priority);
 
+    // Validation error messages
     const validationErrors = ref<{
       title?: string;
       description?: string;
@@ -115,7 +119,7 @@ export default defineComponent({
       general?: string;
     }>({});
 
-    // Validation schema
+    // Validation schema for the task form
     const validationSchema = yup.object({
       title: yup.string().required("Please enter the task title."),
       description: yup
@@ -130,7 +134,7 @@ export default defineComponent({
 
     // Submit task function
     const submitTask = async () => {
-      validationErrors.value = {}; // Clear any existing validation errors
+      validationErrors.value = {}; // Reset validation errors
       try {
         // Validate the task input
         await validationSchema.validate(task.value, { abortEarly: false });
@@ -138,25 +142,13 @@ export default defineComponent({
         // Create a new task by sending it to the backend without an ID
         const newTask = await addTodo({
           ...task.value,
-          // Do not include the ID; let the server handle it
         });
 
-        console.log("New task added:", newTask);
-        emit("taskAdded", newTask); // Emit an event to notify that a new task has been added
-
-        // Reset the task and due date
-        task.value = {
-          id: "", // This can remain empty
-          title: "",
-          description: "",
-          priority: Priority.High,
-          dueDate: "",
-          completed: false,
-        };
-        dueDateString.value = new Date().toISOString().split("T")[0]; // Reset due date to today
+        emit("taskAdded", newTask); // Notify parent of the new task
+        closeForm();
+        resetTask();
       } catch (error) {
         if (error instanceof yup.ValidationError) {
-          // If there are validation errors, map them to validationErrors
           error.inner.forEach((err) => {
             validationErrors.value[
               err.path as keyof typeof validationErrors.value
@@ -164,77 +156,143 @@ export default defineComponent({
           });
         } else {
           console.error("Error adding task:", error);
-          // You can set a general error message if necessary
           validationErrors.value["general"] =
             "An unexpected error occurred. Please try again.";
         }
       }
     };
 
+    // Show the task creation form
+    const showAddTaskForm = () => {
+      showForm.value = true;
+    };
+
+    // Close the task creation form
+    const closeForm = () => {
+      showForm.value = false;
+      resetTask();
+    };
+
+    // Reset task form to initial state
+    const resetTask = () => {
+      task.value = {
+        id: "",
+        title: "",
+        description: "",
+        priority: Priority.High,
+        dueDate: "",
+        completed: false,
+      };
+      validationErrors.value = {};
+    };
+
     return {
       task,
-      dueDateString,
       minDate,
       priorityOptions,
       validationErrors,
       validationSchema,
-      updateDueDate,
       submitTask,
+      showForm,
+      showAddTaskForm,
+      closeForm,
     };
   },
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/styles/styles.scss";
 
 .add-task {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #f8f9fa; // Light background
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
-}
-
-form {
-  display: flex; // Use flexbox for layout
-  flex-direction: column; // Column layout
-  justify-content: center;
-  gap: 15px; // Space between form elements
-}
-
-input,
-select {
-  margin-top: 5px;
-  border: 1px solid #ced4da; // Light border
-  border-radius: 5px; // Rounded corners
-  font-size: 16px; // Larger text for accessibility
-  transition: border-color 0.3s;
-  display: block;
+  margin: 0 -60px;
+  display: flex;
   width: 100%;
+  height: fit-content;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  padding: 1rem;
+  border-radius: 20px;
+  background: linear-gradient(
+    68deg,
+    rgba(156, 178, 220, 0.17) 0.09%,
+    rgba(209, 203, 241, 0.15) 98.62%
+  );
+}
 
-  &:focus {
-    border-color: #007bff; // Blue border on focus
-    outline: none; // Remove default outline
-  }
+.add-task-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  border-radius: 16px;
+  background-color: #f8f9fa;
+  border: 2px dashed rgb(227, 224, 246);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-task-container:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-task-title {
+  line-height: 1.8;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0 auto;
+  border: 2px dashed rgb(227, 224, 246);
+  padding: 2rem;
+  border-radius: 16px;
+  background-color: #f8f9fa;
 }
 
 .btn-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
 }
-.error-message {
-  color: red;
-  font-size: 12px;
+
+.primary {
+  background-color: #8c7cdb;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .add-task {
-    padding: 15px;
-    max-width: 100%; // Full width on small screens
-  }
+.primary:hover {
+  background-color: rgb(140, 124, 219, 0.8);
+}
+
+.cancel {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel:hover {
+  background-color: #d43b3e;
+}
+
+.error-message {
+  color: #ff4d4f;
+  font-size: 12px;
 }
 </style>

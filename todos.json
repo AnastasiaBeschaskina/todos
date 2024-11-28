@@ -1,179 +1,83 @@
 {
   "todos": [
     {
-      "id": "3",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
+      "id": "1",
+      "title": "Setup Development Environment",
+      "description": "Install and configure IDE, Node.js, and a database management system.",
       "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
+      "dueDate": "2024-12-01",
+      "completed": false
+    },
+    {
+      "id": "2",
+      "title": "Learn REST API Basics",
+      "description": "Understand how to create and consume RESTful APIs.",
+      "priority": "Medium",
+      "dueDate": "2024-12-02",
+      "completed": false
+    },
+    {
+      "id": "3",
+      "title": "Build a Simple CRUD App",
+      "description": "Develop a basic full stack application with CRUD operations.",
+      "priority": "High",
+      "dueDate": "2024-12-05",
+      "completed": false
     },
     {
       "id": "4",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
+      "title": "Study Authentication Techniques",
+      "description": "Implement user authentication using JWT and OAuth.",
       "priority": "High",
-      "dueDate": "2024-10-17",
+      "dueDate": "2024-12-06",
       "completed": false
     },
     {
       "id": "5",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
+      "title": "Frontend Styling with CSS and Frameworks",
+      "description": "Practice responsive design using CSS and frameworks like Tailwind or Bootstrap.",
+      "priority": "Medium",
+      "dueDate": "2024-12-07",
+      "completed": false
     },
     {
       "id": "6",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
+      "title": "Backend Development with Express.js",
+      "description": "Create backend routes and controllers using Express.js.",
       "priority": "High",
-      "dueDate": "2024-10-17",
+      "dueDate": "2024-12-08",
       "completed": false
     },
     {
       "id": "7",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
+      "title": "Database Operations",
+      "description": "Learn to perform CRUD operations with MongoDB or MySQL.",
       "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
+      "dueDate": "2024-12-09",
+      "completed": false
     },
     {
       "id": "8",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
+      "title": "Debugging and Error Handling",
+      "description": "Learn how to debug applications and handle errors gracefully.",
+      "priority": "Medium",
+      "dueDate": "2024-12-10",
       "completed": false
     },
     {
       "id": "9",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
+      "title": "Version Control with Git",
+      "description": "Practice creating branches, commits, and pull requests on GitHub.",
+      "priority": "Medium",
+      "dueDate": "2024-12-11",
+      "completed": false
     },
     {
       "id": "10",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
+      "title": "Deploy an Application",
+      "description": "Deploy a full stack application to Heroku or Vercel.",
       "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "11",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "12",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "13",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "14",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "15",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "16",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "17",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "184",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "23",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "24",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "33",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "34",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
-      "completed": false
-    },
-    {
-      "id": "43",
-      "title": "Frontend Development with Vue.js",
-      "description": "Build the frontend of the application using Vue.js.",
-      "priority": "High",
-      "dueDate": "2024-10-16",
-      "completed": true
-    },
-    {
-      "id": "44",
-      "title": "Implement Database Integration",
-      "description": "Connect the backend with the database to perform CRUD operations.",
-      "priority": "High",
-      "dueDate": "2024-10-17",
+      "dueDate": "2024-12-12",
       "completed": false
     }
   ]

@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <!-- <label :for="id">{{ label }}</label> -->
-    <Field as="select" :name="name" :value="modelValue" @change="updateValue" class="common-select"> 
-      <option value="" disabled>Select {{ label }}</option>
-      <option v-for="(option, index) in options" :key="index" :value="option">{{ option }}</option>
+  <div class="select">
+    <Field as="select" :name="name" :value="modelValue" @change="updateValue">
+      <option value="" disabled class="ladel">Select {{ label }}</option>
+      <option v-for="(option, index) in options" :key="index" :value="option">
+        {{ option }}
+      </option>
     </Field>
     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
   </div>
@@ -28,13 +29,28 @@ export default defineComponent({
   methods: {
     updateValue(event: Event) {
       const target = event.target as HTMLSelectElement;
-      this.$emit("update:modelValue", target.value); // Emit the new value
+      this.$emit("update:modelValue", target.value);
     },
   },
 });
 </script>
 
 <style lang="scss">
-@import "@/styles/styles.scss"; // Import the SCSS styles
+@import "@/styles/styles.scss";
 
+.select {
+  display: block;
+  width: 300px;
+  margin: 0;
+  padding: 0;
+}
+
+.select select {
+  display: block;
+  max-width: 100%;
+  width: 300px;
+}
+.select :nth-child(1) {
+  color: #777;
+}
 </style>

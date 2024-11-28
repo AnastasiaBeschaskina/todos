@@ -5,6 +5,7 @@
       stroke="currentColor"
       stroke-width="2"
       fill="none"
+      color="white"
     />
   </svg>
 </template>

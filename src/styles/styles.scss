@@ -2,47 +2,65 @@
 
 // Color Variables
 $background-color: #f4f4f4; // Light grey background
-$primary-color: #4A90E2; // Primary color
-$secondary-color: #333; // Dark grey for text
-$success-color: #d4edda; // Light green for completed tasks
-$error-color: #dc3545; // Red for errors
-$border-color: #ccc; // Light grey for borders
-$border-radius: 5px; // Common border radius
-$font-family: 'Dancing Script', sans-serif;
+$background-color: #f4f4f4;
+$primary-color: #2dc08d;
+$primary-color-hover: #27af7f;
+$secondary-color: #5f4dc7;
+$secondary-color-hover: #4b3c9b;
+$success-color: #d4edda;
+$error-color: #dc3545;
+$border-color: #ccc;
+$text-primary: #00c091;
 
 // Global Styles
-
 
 html {
   font-size: 16px;
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   line-height: 1.6;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: $primary-color;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Rubik;
+  font-style: normal;
+  color: #2d3639;
+  margin: 3px;
 }
 
-// Headings
-h1, h2, h3, h4 {
-  margin: 0;
-  color: $primary-color; // Primary color for headings
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  // unicode-bidi: isolate;
 }
 
-h3 {
-  color: $secondary-color;
-}
 h2 {
   font-size: 1.5em;
   margin-bottom: 20px;
+}
+
+//Form
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  max-width:100%; 
+  width: 300px; 
 }
 
 // Links
@@ -54,63 +72,65 @@ a {
     text-decoration: underline; // Underline on hover
   }
 }
+//Icon
+i {
+  color: $secondary-color;
+}
 
 // Buttons
 button {
-  padding: 10px;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 13px 16px;
+  width: 300px;
+  max-width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
   border: none;
-  border-radius: 5px;
-  color: white;
-  width: 200px; /* Set a fixed width for all buttons */
-  max-width: 100%; /* Allow it to be responsive */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
 }
 
-.btn-primary {
-  background-color: $primary-color; /* Use your primary color variable */
+.primary {
+  background-color: $primary-color;
 }
 
-.btn-primary:hover {
-  background-color: darken($primary-color, 10%); /* Darker shade on hover */
+.primary:hover {
+  background-color: darken($primary-color, 10%);
 }
 
-.btn-cancel {
-  background-color: $secondary-color; /* Use your secondary color variable */
+.cancel {
+  background-color: $secondary-color; 
 }
 
-.btn-cancel:hover {
-  background-color: darken($secondary-color, 10%); /* Darker shade on hover */
+.cancel:hover {
+  background-color: darken($secondary-color, 10%); 
 }
 
-.btn-delete {
+.delete {
   max-width: fit-content;
-  background-color: rgba(255, 0, 0, 0.5); /* Semi-transparent red */
+  background-color: rgba(255, 0, 0, 0.5); 
 }
 
-.btn-delete:hover {
-  background-color: rgba(255, 0, 0, 0.7); /* More opaque red on hover */
+.delete:hover {
+  background-color: rgba(255, 0, 0, 0.7); 
 }
 
-.btn-danger {
-  background-color: $error-color; /* Use your error color variable */
+.danger {
+  background-color: $error-color; 
 }
 
-.btn-danger:hover {
-  background-color: darken($error-color, 10%); /* Darker shade on hover */
+.danger:hover {
+  background-color: darken($error-color, 10%); 
 }
 
 // Form Elements
-input, select, textarea {
+input,
+select{
   width: 100%;
-  padding: 10px;
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
-  transition: border-color 0.3s;
+  padding: 10px 0;
 
   &:focus {
-    border-color: $primary-color; // Change border color on focus
-    outline: none; // Remove default outline
+    border-color: $primary-color-hover;
+    outline: none; 
   }
 }
 
@@ -121,23 +141,6 @@ input, select, textarea {
   margin-top: 5px;
 }
 
-.common-select {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-}
-// Utility Classes
-.text-center {
-  text-align: center;
-}
-
-.mt-1 {
-  margin-top: 10px;
-}
-
-.mt-2 {
-  margin-top: 20px;
-}
 
 @media (max-width: 1024px) {
   html {
@@ -181,11 +184,11 @@ input, select, textarea {
   p {
     font-size: 0.9rem;
   }
- 
+
   input,
   select,
   textarea {
-    padding: 5px; 
+    padding: 5px;
     font-size: 1rem;
   }
 }
@@ -193,15 +196,15 @@ input, select, textarea {
 /* Mobile Styles */
 @media (max-width: 576px) {
   html {
-    font-size: 13px; 
+    font-size: 13px;
   }
 
   body {
-    padding: 10px; 
+    padding: 10px;
   }
 
   h1 {
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
   }
 
   h2 {
@@ -214,10 +217,10 @@ input, select, textarea {
 
   p {
     font-size: 0.85rem;
-    line-height: 1.4; 
+    line-height: 1.4;
   }
   .button {
     font-size: 0.9rem;
-    padding: 8px 12px; 
+    padding: 8px 12px;
   }
 }

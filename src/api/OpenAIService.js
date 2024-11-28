@@ -1,3 +1,4 @@
+// const S3TodoRepository = require("../../repositories/s3TodoRepository");
 const axios = require("axios"); // Importing axios to make HTTP requests
 const express = require("express"); // Importing express to set up the web server
 const multer = require("multer"); // Importing multer to handle file uploads
@@ -7,6 +8,7 @@ class OpenAIService {
   constructor(apiKey) {
     this.apiKey = apiKey; // Storing the API key for OpenAI
     this.apiUrl = "https://api.openai.com/v1/chat/completions"; // Defining the OpenAI API URL for chat completions
+    // this.s3TodoRepository = new S3TodoRepository();
   }
 
   // Method to generate interview tasks based on the interview date, position, and experience level
@@ -123,8 +125,9 @@ Please generate a list of tasks, structured like this:
           },
         ],
       };
-
-      // Returning the generated response
+      // console.log(generatedResponse.todos);
+      // // Returning the generated response
+      // await this.s3TodoRepository.saveTodos({ todos: generatedResponse.todos });
       return generatedResponse;
     } catch (error) {
       // Handling errors, including rate limiting (too many requests)
