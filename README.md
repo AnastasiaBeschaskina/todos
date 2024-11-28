@@ -41,11 +41,12 @@ npm install --save-dev @vue/cli-service @vue/cli-plugin-babel @vue/cli-plugin-es
 ## Configure Environment Variables
 
 To allow the application to interact with AWS S3, create an .env file in the backend root directory with the following content:
-
+```
 AWS_ACCESS_KEY_ID=your-access-key-id
 AWS_SECRET_ACCESS_KEY=your-secret-access-key
 AWS_REGION=your-region
 AWS_S3_BUCKET=your-bucket-name
+```
 
 Replace your-access-key-id, your-secret-access-key, your-region, and your-bucket-name with your actual AWS credentials and bucket details.
 
