@@ -51,9 +51,9 @@ AWS_S3_BUCKET=your-bucket-name
 Replace your-access-key-id, your-secret-access-key, your-region, and your-bucket-name with your actual AWS credentials and bucket details.
 
 
-### Compiles and hot-reloads for development
+## Compiles and hot-reloads for development
 Make sure your package.json has the dev script configured correctly. It should look something like this:
-
+```
 "scripts": {
   "serve": "vue-cli-service serve",
   "build": "vue-cli-service build",
@@ -63,7 +63,7 @@ Make sure your package.json has the dev script configured correctly. It should l
   "start": "node index.js", 
   "dev": "concurrently \"npm run serve\" \"npm run start\"" 
 }
-
+```
 ## Run the Application
 
 ```
