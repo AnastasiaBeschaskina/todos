@@ -38,6 +38,18 @@ npm install vue vue-router vuex axios core-js postcss vee-validate yup @fontsour
 npm install --save-dev @vue/cli-service @vue/cli-plugin-babel @vue/cli-plugin-eslint @vue/cli-plugin-router @vue/cli-plugin-typescript @vue/cli-plugin-unit-jest @vue/cli-plugin-vuex @vue/cli-plugin-pwa @vue/cli-plugin-e2e-cypress @vue/eslint-config-typescript concurrently cypress jest ts-jest typescript babel-jest @types/jest @types/uuid
 ```
 
+## Configure Environment Variables
+
+To allow the application to interact with AWS S3, create an .env file in the backend root directory with the following content:
+
+AWS_ACCESS_KEY_ID=your-access-key-id
+AWS_SECRET_ACCESS_KEY=your-secret-access-key
+AWS_REGION=your-region
+AWS_S3_BUCKET=your-bucket-name
+
+Replace your-access-key-id, your-secret-access-key, your-region, and your-bucket-name with your actual AWS credentials and bucket details.
+
+
 ### Compiles and hot-reloads for development
 Make sure your package.json has the dev script configured correctly. It should look something like this:
 
@@ -47,36 +59,13 @@ Make sure your package.json has the dev script configured correctly. It should l
   "test:unit": "vue-cli-service test:unit",
   "test:e2e": "vue-cli-service test:e2e",
   "lint": "vue-cli-service lint",
-  "start": "node index.js", // This should point to your backend entry point
-  "dev": "concurrently \"npm run serve\" \"npm run start\"" // This runs both frontend and backend
+  "start": "node index.js", 
+  "dev": "concurrently \"npm run serve\" \"npm run start\"" 
 }
 
+## Run the Application
 
 ```
-npm install --save-dev concurrently
-
-npm run serve
+npm run dev
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
