@@ -17,32 +17,3 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.env
-
-# Игнорирование всех ненужных файлов
-*.pdf
-*.pages
-*.png
-*.jpg
-*.jpeg
-*.webp
-*.key
-*.dmg
-
-# Игнорирование системных файлов и директорий
-.DS_Store
-/.vscode/
-/.idea/
-/node_modules/
-/android/
-/.cache/
-/Library/
-/.local/
