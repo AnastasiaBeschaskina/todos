@@ -1,0 +1,226 @@
+// styles.scss
+
+// Color Variables
+$background-color: #f4f4f4; // Light grey background
+$background-color: #f4f4f4;
+$primary-color: #2dc08d;
+$primary-color-hover: #27af7f;
+$secondary-color: #5f4dc7;
+$secondary-color-hover: #4b3c9b;
+$success-color: #d4edda;
+$error-color: #dc3545;
+$border-color: #ccc;
+$text-primary: #00c091;
+
+// Global Styles
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Rubik;
+  font-style: normal;
+  color: #2d3639;
+  margin: 3px;
+}
+
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  // unicode-bidi: isolate;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+//Form
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  max-width:100%; 
+  width: 300px; 
+}
+
+// Links
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline; // Underline on hover
+  }
+}
+//Icon
+i {
+  color: $secondary-color;
+}
+
+// Buttons
+button {
+  font-size: 18px;
+  line-height: 24px;
+  padding: 13px 16px;
+  width: 300px;
+  max-width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border: none;
+}
+
+.primary {
+  background-color: $primary-color;
+}
+
+.primary:hover {
+  background-color: darken($primary-color, 10%);
+}
+
+.cancel {
+  background-color: $secondary-color; 
+}
+
+.cancel:hover {
+  background-color: darken($secondary-color, 10%); 
+}
+
+.delete {
+  max-width: fit-content;
+  background-color: rgba(255, 0, 0, 0.5); 
+}
+
+.delete:hover {
+  background-color: rgba(255, 0, 0, 0.7); 
+}
+
+.danger {
+  background-color: $error-color; 
+}
+
+.danger:hover {
+  background-color: darken($error-color, 10%); 
+}
+
+// Form Elements
+input,
+select{
+  width: 100%;
+  padding: 10px 0;
+
+  &:focus {
+    border-color: $primary-color-hover;
+    outline: none; 
+  }
+}
+
+// Error Messages
+.error-message {
+  color: $error-color;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 5px;
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 576px) {
+  html {
+    font-size: 13px;
+  }
+
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  .button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}
